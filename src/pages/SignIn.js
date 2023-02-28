@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import { ReactComponent as ArrowRightIcon } from "../assets/svg/keyboardArrowRightIcon.svg";
 import visibilityIcon from "../assets/svg/visibilityIcon.svg";
 import OAuth from "../components/OAuth";
@@ -12,6 +16,14 @@ const SignIn = () => {
     email: "",
     password: "",
   });
+
+  const auth = getAuth();
+
+  const [data, setData] = useState({
+    name: auth?.currentUser?.displayName,
+  });
+
+  console.log({ data });
 
   // const {email,password} = formData;
   const navigate = useNavigate();
@@ -28,8 +40,6 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const auth = getAuth();
-
     const email = formData.email;
     const password = formData.password;
 
@@ -41,6 +51,14 @@ const SignIn = () => {
       );
 
       const user = userCredentials.user;
+
+      updateProfile(auth.currentUser, {
+        displayName: formData.name,
+      });
+
+      console.log({ user });
+
+      // console.log(updateProfile());
 
       if (user) {
         navigate("/");
@@ -55,7 +73,7 @@ const SignIn = () => {
     <>
       <div className="pageContainer">
         <header>
-          <p className="pageHeader">Welcome Back</p>
+          <p className="pageHeader">Welcome Back {data?.name?.toUpperCase()}</p>
         </header>
         <main>
           <form onSubmit={handleSubmit}>
@@ -63,7 +81,7 @@ const SignIn = () => {
               type="email"
               id="email"
               name="email"
-              value={formData.email}
+              // value={formData.email}
               onChange={handleChange}
               className="emailInput"
               placeholder="Please Enter Your Email Address"
@@ -74,7 +92,7 @@ const SignIn = () => {
                 name="password"
                 id="password"
                 className="passwordInput"
-                value={formData.password}
+                // value={formData.password}
                 onChange={handleChange}
                 placeholder="Please Enter Your Password"
               />
@@ -97,11 +115,11 @@ const SignIn = () => {
             </div>
           </form>
 
-          <OAuth/>
-
           <Link to="/sign-up" className="registerLink">
             Sign Up Instead
           </Link>
+
+          <OAuth />
         </main>
       </div>
     </>

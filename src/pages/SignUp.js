@@ -35,14 +35,12 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
     const auth = getAuth();
     // const name = formData.name;
     const email = formData.email;
     const password = formData.password;
 
     try {
-
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         // name,
@@ -50,7 +48,7 @@ const SignUp = () => {
         password
       );
 
-      console.log({userCredential});
+      console.log({ userCredential });
 
       //getting the user from the user credential
       const user = userCredential.user;
@@ -66,7 +64,6 @@ const SignUp = () => {
       updateProfile(auth.currentUser, {
         displayName: formData.name,
       });
-
 
       // store user to firestore
       const formDataCopy = { ...formData };
@@ -86,7 +83,7 @@ const SignUp = () => {
     <>
       <div className="pageContainer">
         <header>
-          <p className="pageHeader">Welcome Back</p>
+          <p className="pageHeader">Register</p>
         </header>
         <main>
           <form onSubmit={handleSubmit}>
@@ -94,7 +91,7 @@ const SignUp = () => {
               type="text"
               id="name"
               name="name"
-              value={formData.name}
+              // value={formData.name}
               onChange={handleChange}
               className="nameInput"
               placeholder="Please Enter Your Name"
@@ -103,7 +100,7 @@ const SignUp = () => {
               type="email"
               id="email"
               name="email"
-              value={formData.email}
+              // value={formData.email}
               onChange={handleChange}
               className="emailInput"
               placeholder="Please Enter Your Email Address"
@@ -114,7 +111,7 @@ const SignUp = () => {
                 name="password"
                 id="password"
                 className="passwordInput"
-                value={formData.password}
+                // value={formData.password}
                 onChange={handleChange}
                 placeholder="Please Enter Your Password"
               />
@@ -137,11 +134,11 @@ const SignUp = () => {
             </div>
           </form>
 
-         <OAuth/>
-
           <Link to="/sign-in" className="registerLink">
-            Sign Up Instead
+            Sign In Instead
           </Link>
+
+          <OAuth />
         </main>
       </div>
     </>

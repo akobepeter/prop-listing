@@ -7,7 +7,7 @@ import bathtubIcon from "../assets/svg/bathtubIcon.svg";
 
 const ListItemComponent = ({ listing, id, onEdit, onDelete }) => {
   console.log(listing);
-  console.log(listing?.id);
+  console.log(id);
   return (
     <li className="listing">
       <Link

@@ -50,7 +50,6 @@ const Offers = () => {
             id: doc.id,
             data: doc.data(),
           });
-          
         });
 
         setListings(listings);
@@ -113,8 +112,13 @@ const Offers = () => {
           <main>
             <ul className="categoryListings" style={{ listStyle: "none" }}>
               {listings.map(function (listing) {
-                 {/* return console.log({listing}); */}
-                return <ListItemComponent listing={listing?.data} id={listing?.id} key={listing?.id}/>
+                return (
+                  <ListItemComponent
+                    listing={listing?.data}
+                    id={listing?.id}
+                    key={listing?.id}
+                  />
+                );
               })}
             </ul>
 
