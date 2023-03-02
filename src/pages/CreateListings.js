@@ -6,7 +6,7 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import {collection,addDoc,serverTimestamp} from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase/firebase.config";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
@@ -103,21 +103,17 @@ const CreateListings = () => {
           ? undefined
           : data.results[0]?.formatted_address;
 
-      if(location === undefined || location.includes('undefined')){
-          setLoading(true);
-          toast.error('Please enter a valid address');
-          return
-      }else {
+      if (location === undefined || location.includes("undefined")) {
+        setLoading(true);
+        toast.error("Please enter a valid address");
+        return;
+      } else {
         geolocation.lat = latitude;
         geolocation.lng = longitude;
         location = address;
-        console.log(geolocation,location);
+        console.log(geolocation, location);
       }
-
-
-
-
-    } 
+    }
 
     // Store Images in firebase
     const storeImages = async (image) => {
@@ -132,10 +128,9 @@ const CreateListings = () => {
         uploadTask.on(
           "state_changed",
           (snapshot) => {
-
             const progress =
               (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log("Upload is " + progress + "% done");
+            console.log("Upload is " + progress + "% done");
             switch (snapshot.state) {
               case "paused":
                 console.log("Upload is paused");
@@ -161,13 +156,13 @@ const CreateListings = () => {
     };
 
     const imgUrls = await Promise.all(
-      [...images].map(function(image){
+      [...images].map(function (image) {
         return storeImages(image);
       })
-    ).catch(function(){
+    ).catch(function () {
       setLoading(false);
       toast.error("Images not uploaded");
-      return
+      return;
     });
 
     // console.log(imgUrls)
@@ -175,20 +170,20 @@ const CreateListings = () => {
       ...formData,
       imgUrls,
       geolocation,
-      timestamp: serverTimestamp()
+      timestamp: serverTimestamp(),
     };
 
     formDataCopy.location = address;
     delete formDataCopy.images;
     delete formDataCopy.address;
-    !formDataCopy.offer && delete formDataCopy.discountedPrice
+    !formDataCopy.offer && delete formDataCopy.discountedPrice;
 
     // save data to firestore
-    const docRef = await addDoc(collection(db,"listings"),formDataCopy);
-   
-     setLoading(false);
-     toast.success('listings saved successfully');
-     navigate(`category/${formDataCopy.type}/${docRef.id}`)
+    const docRef = await addDoc(collection(db, "listings"), formDataCopy);
+
+    setLoading(false);
+    toast.success("listings saved successfully");
+    navigate(`category/${formDataCopy.type}/${docRef.id}`);
   };
 
   const onMutate = (e) => {
