@@ -77,6 +77,8 @@ const SignUp = () => {
       // console.log(error)
       toast.error("Invalid Login Credentials");
     }
+
+    setFormData({ name: "", email: "", password: "" });
   };
 
   return (

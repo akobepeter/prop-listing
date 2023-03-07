@@ -19,7 +19,9 @@ import HomeIcon from "../assets/svg/homeIcon.svg";
 
 const Profile = () => {
   const auth = getAuth();
-  //console.log(auth);
+
+  const users = auth?.currentUser?.uid;
+  console.log({ users });
 
   const [changeDetails, setChangeDetails] = React.useState(false);
   const [formData, setFormData] = React.useState({
@@ -33,35 +35,55 @@ const Profile = () => {
 
   const navigate = useNavigate();
 
+  // console.log(users?.uid);
+
+  useEffect(() => {
+    const fetchUserListings = async () => {
+      try {
+        const listingsRef = collection(db, "listings");
+
+        const q = query(
+          listingsRef,
+          where("useRef", "==", users),
+          orderBy("timestamp", "desc")
+        );
+
+        const itemsDocs = await getDocs(q);
+
+        const items = itemsDocs.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        console.log({ items });
+        // const querySnap = await getDocs(q);
+
+        // let listings = [];
+
+        // querySnap.forEach((doc) => {
+        //   return listings.push({
+        //     id: doc.id,
+        //     data: doc.data(),
+        //   });
+        // });
+        // console.log({ listings });
+        setListings(items);
+        setLoading(false);
+      } catch (error) {
+        console.log("fetchUserListings ", error);
+        toast.error("User Listings is not set");
+      }
+    };
+
+    fetchUserListings();
+  }, [users]);
+
   const handleLogout = () => {
     auth.signOut();
     navigate("/sign-in");
   };
 
-  useEffect(() => {
-    const fetchUserListing = async () => {
-      const listingsRef = collection(db, "listings");
-      const q = query(
-        listingsRef,
-        where("userRef", "==", auth.currentUser.uid),
-        orderBy("timestamp", "desc")
-      );
-      const querySnap = await getDocs(q);
-      let listings = [];
-
-      querySnap.forEach((doc) => {
-        return listings.push({
-          id: doc.id,
-          data: doc.data(),
-        });
-      });
-      // console.log(listings);
-      setListings(listings);
-      setLoading(false);
-    };
-
-    fetchUserListing();
-  }, [auth.currentUser.uid]);
+  // tBaRBWM1SKaiWRm9kkCJJhgbfbw2
 
   const handleChangeDetails = () => {
     if (changeDetails) {
@@ -159,11 +181,11 @@ const Profile = () => {
             <p className="listingText">Your Listings</p>
             <ul className="listingsList">
               {listings?.map(function (listing) {
-                //  console.log(listing);
+                // console.log({ listing });
                 return (
                   <ListItemComponent
                     key={listing?.id}
-                    listing={listing?.data}
+                    listing={listing}
                     id={listing?.id}
                     onDelete={() => onDelete(listing?.id)}
                     onEdit={() => onEdit(listing?.id)}

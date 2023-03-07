@@ -1,15 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import DeleteIcon from "../assets/svg/deleteIcon.svg";
-import EditIcon from "../assets/svg/editIcon.svg";
+// import DeleteIcon from "../assets/svg/deleteIcon.svg";
+// import DeleteIcon from "../assets/svg/deleteIcon.svg";
+// import EditIcon from "../assets/svg/editIcon.svg";
 import bedIcon from "../assets/svg/bedIcon.svg";
 import bathtubIcon from "../assets/svg/bathtubIcon.svg";
+import { AiOutlineDelete } from "react-icons/ai";
+import { AiFillEdit } from "react-icons/ai";
 
 const ListItemComponent = ({ listing, id, onEdit, onDelete }) => {
-  console.log(listing);
+  console.log({ listing });
   console.log(id);
   return (
-    <li className="listing">
+    <li className="listing" style={{ listStyle: "none" }}>
       <Link
         to={`/category/${listing?.type}/${id}`}
         className="categoryListingLink"
@@ -24,7 +27,7 @@ const ListItemComponent = ({ listing, id, onEdit, onDelete }) => {
           <p className="categoryListingName">{listing?.name}</p>
           <p className="categoryListingPrice">
             $
-            {listing.offer
+            {listing?.offer
               ? listing?.discountedPrice
                   ?.toString()
                   ?.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
@@ -51,14 +54,19 @@ const ListItemComponent = ({ listing, id, onEdit, onDelete }) => {
         </div>
       </Link>
       {onDelete && (
-        <DeleteIcon
+        // <DeleteIcon
+        //   className="removeIcon"
+        //   fill="rgb(231,76,68)"
+        //   onClick={() => onDelete(listing?.data?.id, listing?.data?.name)}
+        // />
+        <AiOutlineDelete
           className="removeIcon"
           fill="rgb(231,76,68)"
-          onClick={() => onDelete(listing?.data?.id, listing?.data?.name)}
+          onClick={() => onDelete(listing?.id, listing?.name)}
         />
       )}
 
-      {onEdit && <EditIcon className="editIcon" onClick={() => onEdit(id)} />}
+      {onEdit && <AiFillEdit className="editIcon" onClick={() => onEdit(id)} />}
     </li>
   );
 };

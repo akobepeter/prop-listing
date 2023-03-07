@@ -23,7 +23,7 @@ const SignIn = () => {
     name: auth?.currentUser?.displayName,
   });
 
-  console.log({ data });
+  // console.log({ data });
 
   // const {email,password} = formData;
   const navigate = useNavigate();
@@ -67,6 +67,8 @@ const SignIn = () => {
       // console.log(error.message);
       toast.error("Invalid Login Credentials");
     }
+
+    setFormData({ email: "", password: "" });
   };
 
   return (
