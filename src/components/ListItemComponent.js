@@ -1,12 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import DeleteIcon from "../assets/svg/deleteIcon.svg";
-// import DeleteIcon from "../assets/svg/deleteIcon.svg";
-// import EditIcon from "../assets/svg/editIcon.svg";
+import { ReactComponent as DeleteIcon } from "../assets/svg/deleteIcon.svg";
+import { ReactComponent as EditIcon } from "../assets/svg/editIcon.svg";
 import bedIcon from "../assets/svg/bedIcon.svg";
 import bathtubIcon from "../assets/svg/bathtubIcon.svg";
-import { AiOutlineDelete } from "react-icons/ai";
-import { AiFillEdit } from "react-icons/ai";
 
 const ListItemComponent = ({ listing, id, onEdit, onDelete }) => {
   console.log({ listing });
@@ -54,19 +51,23 @@ const ListItemComponent = ({ listing, id, onEdit, onDelete }) => {
         </div>
       </Link>
       {onDelete && (
-        // <DeleteIcon
-        //   className="removeIcon"
-        //   fill="rgb(231,76,68)"
-        //   onClick={() => onDelete(listing?.data?.id, listing?.data?.name)}
-        // />
-        <AiOutlineDelete
+        <DeleteIcon
           className="removeIcon"
           fill="rgb(231,76,68)"
+          size={32}
+          style={{ color: "red", cursor: "pointer" }}
           onClick={() => onDelete(listing?.id, listing?.name)}
         />
       )}
 
-      {onEdit && <AiFillEdit className="editIcon" onClick={() => onEdit(id)} />}
+      {onEdit && (
+        <EditIcon
+          className="editIcon"
+          onClick={() => onEdit(id)}
+          size={32}
+          style={{ color: "red", cursor: "pointer" }}
+        />
+      )}
     </li>
   );
 };

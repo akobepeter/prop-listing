@@ -15,7 +15,9 @@ import { toast } from "react-toastify";
 
 const CreateListings = () => {
   const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const [geolocationEnabled, setGeoLocationEnabled] = useState(false);
+
   const [formData, setFormData] = useState({
     type: "rent",
     name: "",
@@ -139,7 +141,6 @@ const CreateListings = () => {
                 console.log("Upload is running");
                 break;
               default:
-                console.log("Upload successful");
                 break;
             }
           },

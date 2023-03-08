@@ -98,15 +98,20 @@ const Profile = () => {
   };
 
   const onDelete = async (listingId) => {
-    if (window.confirm("Are you sure you want to delete?")) {
-      const docRef = doc(db, "listings", listingId);
-      await deleteDoc(docRef);
-      const updatedListings = listings.filter(function (listing) {
-        return listing.id !== listingId;
-      });
+    try {
+      if (window.confirm("Are you sure you want to delete?")) {
+        const docRef = doc(db, "listings", listingId);
+        await deleteDoc(docRef);
+        const updatedListings = listings.filter(function (listing) {
+          return listing.id !== listingId;
+        });
 
-      setListings(updatedListings);
-      toast.success("Successfully Deleted Listing");
+        setListings(updatedListings);
+        toast.success("Successfully Deleted Listing");
+      }
+    } catch (error) {
+      console.log("onDelete ", error);
+      toast.error("An error occurred");
     }
   };
 
