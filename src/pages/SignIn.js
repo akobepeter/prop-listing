@@ -17,6 +17,8 @@ const SignIn = () => {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const auth = getAuth();
 
   const [data, setData] = useState({
@@ -44,6 +46,7 @@ const SignIn = () => {
     const password = formData.password;
 
     try {
+      setLoading(true);
       const userCredentials = await signInWithEmailAndPassword(
         auth,
         email,
@@ -66,6 +69,8 @@ const SignIn = () => {
     } catch (error) {
       // console.log(error.message);
       toast.error("Invalid Login Credentials");
+    } finally {
+      setLoading(false);
     }
 
     setFormData({ email: "", password: "" });
@@ -111,7 +116,7 @@ const SignIn = () => {
 
             <div className="signInBar">
               <p className="signInText"> Sign In</p>
-              <button className="signInButton">
+              <button className={loading ? "loadingSpinner" : "signUpButton"}>
                 <ArrowRightIcon fill="#fff" width="34px" height="34px" />
               </button>
             </div>
